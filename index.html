@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Character Description</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            padding: 20px;
+        }
+
+        /* Start Page Styles */
+        .start-page {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 60px 40px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            transition: all 0.5s ease;
+        }
+
+        .start-page h1 {
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+
+        .start-button {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .start-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Writing Page Styles */
+        .writing-page {
+            display: none;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+
+        /* Floating Images Animation */
+        .floating-container {
+            height: 80px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .floating-box {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(45deg, #ff6b6b, #feca57);
+            border-radius: 10px;
+            top: 15px;
+            right: -60px;
+            animation: floatMove 4s linear infinite;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .floating-box:nth-child(2) { animation-delay: 1.33s; }
+        .floating-box:nth-child(3) { animation-delay: 2.66s; }
+
+        @keyframes floatMove {
+            0% {
+                right: -60px;
+                transform: rotate(90deg);
+                opacity: 1;
+            }
+            50% {
+                transform: rotate(0deg);
+            }
+            100% {
+                right: calc(100% + 60px);
+                transform: rotate(90deg);
+                opacity: 0;
+            }
+        }
+
+        /* Text Area Styles */
+        .text-container {
+            margin-bottom: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 300px;
+            padding: 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            font-size: 16px;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 200px;
+            max-height: 500px;
+            transition: border-color 0.3s ease;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .char-counter {
+            text-align: right;
+            color: #666;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .char-counter.warning {
+            color: #ff6b6b;
+        }
+
+        /* Send Button */
+        .send-button {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .send-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .send-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Menu Styles */
+        .menu-container {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+        .menu-button {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            padding: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .menu-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .menu-icon {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .menu-line {
+            width: 25px;
+            height: 3px;
+            background: #333;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .menu-dropdown {
+            display: none;
+            position: absolute;
+            top: 50px;
+            right: 0;
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            min-width: 200px;
+        }
+
+        .menu-dropdown.active {
+            display: block;
+        }
+
+        .menu-item {
+            margin-bottom: 15px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .menu-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .menu-item h4 {
+            color: #333;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        .menu-item span {
+            color: #667eea;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        /* Admin Panel Styles */
+        .admin-panel {
+            display: none;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .admin-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .message-item {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+
+        .message-meta {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .message-content {
+            color: #333;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .start-page, .writing-page, .admin-panel {
+                padding: 30px 20px;
+            }
+
+            .start-page h1 {
+                font-size: 2rem;
+            }
+
+            textarea {
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Start Page -->
+        <div class="start-page" id="startPage">
+            <h1>Describe the Character</h1>
+            <button class="start-button" onclick="showWritingPage()">Start</button>
+        </div>
+
+        <!-- Writing Page -->
+        <div class="writing-page" id="writingPage">
+            <!-- Floating Images Container -->
+            <div class="floating-container">
+                <div class="floating-box"></div>
+                <div class="floating-box"></div>
+                <div class="floating-box"></div>
+            </div>
+
+            <!-- Menu -->
+            <div class="menu-container">
+                <button class="menu-button" onclick="toggleMenu()">
+                    <div class="menu-icon">
+                        <div class="menu-line"></div>
+                        <div class="menu-line"></div>
+                        <div class="menu-line"></div>
+                    </div>
+                </button>
+                <div class="menu-dropdown" id="menuDropdown">
+                    <div class="menu-item">
+                        <h4>Total Submissions</h4>
+                        <span id="totalSubmissions">0</span>
+                    </div>
+                    <div class="menu-item">
+                        <h4>Your Submissions Today</h4>
+                        <span id="userSubmissions">0/2</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Text Area -->
+            <div class="text-container">
+                <textarea 
+                    id="characterDescription" 
+                    placeholder="Describe your character here... What do they look like? What's their personality? What's their story?"
+                    maxlength="4000"
+                    oninput="updateCharCounter()"
+                ></textarea>
+                <div class="char-counter" id="charCounter">0/4000</div>
+            </div>
+
+            <!-- Send Button -->
+            <button class="send-button" id="sendButton" onclick="sendDescription()">Send</button>
+        </div>
+
+        <!-- Admin Panel -->
+        <div class="admin-panel" id="adminPanel">
+            <div class="admin-header">
+                <h2>Submitted Descriptions</h2>
+                <button class="start-button" onclick="showWritingPage()">Back to Form</button>
+            </div>
+            <div id="messagesContainer">
+                <p style="text-align: center; color: #666;">No submissions yet.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let submissions = [];
+        let userSubmissionCount = 0;
+        let lastSubmissionDate = null;
+
+        // Initialize the app
+        function initApp() {
+            loadSubmissions();
+            updateMenuStats();
+            checkAdminAccess();
+        }
+
+        // Show writing page
+        function showWritingPage() {
+            document.getElementById('startPage').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'none';
+            document.getElementById('writingPage').style.display = 'block';
+            updateCharCounter();
+            checkSubmissionLimit();
+        }
+
+        // Toggle menu dropdown
+        function toggleMenu() {
+            const dropdown = document.getElementById('menuDropdown');
+            dropdown.classList.toggle('active');
+        }
+
+        // Update character counter
+        function updateCharCounter() {
+            const textarea = document.getElementById('characterDescription');
+            const counter = document.getElementById('charCounter');
+            const length = textarea.value.length;
+            
+            counter.textContent = `${length}/4000`;
+            
+            if (length > 3800) {
+                counter.classList.add('warning');
+            } else {
+                counter.classList.remove('warning');
+            }
+        }
+
+        // Check submission limit
+        function checkSubmissionLimit() {
+            const today = new Date().toDateString();
+            const storedData = localStorage.getItem('userSubmissions');
+            
+            if (storedData) {
+                const data = JSON.parse(storedData);
+                if (data.date === today) {
+                    userSubmissionCount = data.count;
+                } else {
+                    userSubmissionCount = 0;
+                    localStorage.setItem('userSubmissions', JSON.stringify({
+                        date: today,
+                        count: 0
+                    }));
+                }
+            }
+            
+            updateMenuStats();
+            
+            const sendButton = document.getElementById('sendButton');
+            if (userSubmissionCount >= 2) {
+                sendButton.disabled = true;
+                sendButton.textContent = 'Daily limit reached (2/2)';
+            } else {
+                sendButton.disabled = false;
+                sendButton.textContent = 'Send';
+            }
+        }
+
+        // Send description
+        function sendDescription() {
+            const textarea = document.getElementById('characterDescription');
+            const description = textarea.value.trim();
+            
+            if (!description) {
+                alert('Please write a description before sending.');
+                return;
+            }
+            
+            if (userSubmissionCount >= 2) {
+                alert('You have reached your daily limit of 2 submissions.');
+                return;
+            }
+            
+            // Create submission object
+            const submission = {
+                id: Date.now(),
+                content: description,
+                timestamp: new Date().toISOString(),
+                userAgent: navigator.userAgent.substring(0, 50) + '...'
+            };
+            
+            // Save submission
+            submissions.push(submission);
+            localStorage.setItem('submissions', JSON.stringify(submissions));
+            
+            // Update user submission count
+            userSubmissionCount++;
+            const today = new Date().toDateString();
+            localStorage.setItem('userSubmissions', JSON.stringify({
+                date: today,
+                count: userSubmissionCount
+            }));
+            
+            // Clear textarea and update UI
+            textarea.value = '';
+            updateCharCounter();
+            updateMenuStats();
+            checkSubmissionLimit();
+            
+            // Show success feedback
+            const sendButton = document.getElementById('sendButton');
+            const originalText = sendButton.textContent;
+            sendButton.textContent = 'Sent!';
+            sendButton.style.background = '#48bb78';
+            
+            setTimeout(() => {
+                sendButton.style.background = 'linear-gradient(45deg, #667eea, #764ba2)';
+                checkSubmissionLimit();
+            }, 2000);
+        }
+
+        // Update menu statistics
+        function updateMenuStats() {
+            document.getElementById('totalSubmissions').textContent = submissions.length;
+            document.getElementById('userSubmissions').textContent = `${userSubmissionCount}/2`;
+        }
+
+        // Load submissions from storage
+        function loadSubmissions() {
+            const stored = localStorage.getItem('submissions');
+            if (stored) {
+                submissions = JSON.parse(stored);
+            }
+        }
+
+        // Check for admin access
+        function checkAdminAccess() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('admin_access_key') === 'a7f9d2e8b3c1x9z5q4w7r2t8y1u6i0p3') {
+                showAdminPanel();
+            }
+        }
+
+        // Show admin panel
+        function showAdminPanel() {
+            document.getElementById('startPage').style.display = 'none';
+            document.getElementById('writingPage').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'block';
+            
+            displaySubmissions();
+        }
+
+        // Display submissions in admin panel
+        function displaySubmissions() {
+            const container = document.getElementById('messagesContainer');
+            
+            if (submissions.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #666;">No submissions yet.</p>';
+                return;
+            }
+            
+            const html = submissions.map((submission, index) => `
+                <div class="message-item">
+                    <div class="message-meta">
+                        Submission #${index + 1} | ${new Date(submission.timestamp).toLocaleString()} | ${submission.userAgent}
+                    </div>
+                    <div class="message-content">${submission.content}</div>
+                </div>
+            `).join('');
+            
+            container.innerHTML = html;
+        }
+
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const menuContainer = document.querySelector('.menu-container');
+            const dropdown = document.getElementById('menuDropdown');
+            
+            if (!menuContainer.contains(event.target)) {
+                dropdown.classList.remove('active');
+            }
+        });
+
+        // Initialize app when page loads
+        window.addEventListener('load', initApp);
+    </script>
+</body>
+</html>
