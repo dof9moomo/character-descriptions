@@ -31,8 +31,13 @@
             max-width: 800px;
             padding: 20px;
         }
-
-        /* Start Page Styles */
+        <script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
+<script type="text/javascript">
+  (function() {
+      emailjs.init("xlYihz24Md9_xYqxr"); // حط الـ Public Key حقك هنا
+  })();
+</script>
+        }        /* Start Page Styles */
         .start-page {
             background: rgba(255, 255, 255, 0.1);
             border-radius: 20px;
@@ -486,28 +491,92 @@
             }
         }
 
-        // Send description
-        function sendDescription() {
-            const textarea = document.getElementById('characterDescription');
-            const description = textarea.value.trim();
-            
-            if (!description) {
-                alert('Please write a description before sending.');
-                return;
-            }
-            
-            if (userSubmissionCount >= 2) {
-                alert('You have reached your daily limit of 2 submissions.');
-                return;
-            }
-            
-            // Create submission object
-            const submission = {
-                id: Date.now(),
-                content: description,
-                timestamp: new Date().toISOString(),
-                userAgent: navigator.userAgent.substring(0, 50) + '...'
-            };
+        
+         // Send description
+function sendDescription() {
+    const textarea = document.getElementById('characterDescription');
+    const description = textarea.value.trim();
+
+    if (!description) {
+        alert('Please write a description before sending.');
+        return;
+    }
+
+    if (userSubmissionCount >= 2) {
+        alert('You have reached your daily limit of 2 submissions.');
+        return;
+    }
+
+    // إرسال بالإيميل
+    emailjs.send("service_mqi0fu5", "
+__ejs-test-mail-service__", {
+        message: description,
+        user_agent: navigator.userAgent
+    })
+    .then(function() {
+        alert("Message sent successfully!");
+        textarea.value = '';
+        updateCharCounter();
+
+        // تحديث عداد المستخدم
+        userSubmissionCount++;
+        const today = new Date().toDateString();
+        localStorage.setItem('userSubmissions', JSON.stringify({
+            date: today,
+            count: userSubmissionCount
+        }));
+        updateMenuStats();
+        checkSubmissionLimit();
+    }, function(error) {
+        alert("Failed to send message: " + JSON.stringify(error));
+    });
+}
+
+    }
+    
+    // Create submission object
+    const submission = {
+        content: description,
+        timestamp: new Date().toISOString(),
+        userAgent: navigator.userAgent.substring(0, 50) + '...'
+    };
+
+    // ✨ إرسال البيانات إلى Google Sheets
+    fetch("PUT-YOUR-SCRIPT-LINK-HERE", {   // ← حط رابط Google Apps Script هنا
+        method: "POST",
+        body: JSON.stringify(submission)
+    })
+    .then(res => res.text())
+    .then(data => {
+        // تحديث العداد
+        userSubmissionCount++;
+        const today = new Date().toDateString();
+        localStorage.setItem('userSubmissions', JSON.stringify({
+            date: today,
+            count: userSubmissionCount
+        }));
+
+        // تفريغ النص وتحديث الواجهة
+        textarea.value = '';
+        updateCharCounter();
+        updateMenuStats();
+        checkSubmissionLimit();
+        
+        const sendButton = document.getElementById('sendButton');
+        sendButton.textContent = 'Sent!';
+        sendButton.style.background = '#48bb78';
+
+        setTimeout(() => {
+            sendButton.style.background = 'linear-gradient(45deg, #667eea, #764ba2)';
+            checkSubmissionLimit();
+        }, 2000);
+    })
+    .catch(err => {
+        console.error(err);
+        alert("Failed to send. Please try again.");
+    });
+}
+
             
             // Save submission
             submissions.push(submission);
