@@ -56,7 +56,8 @@ button:hover {background:#556cd6; transform:scale(1.05);}
       <textarea id="description" placeholder="Write your character description..."></textarea>
       <div class="char-counter" id="charCounter">0 / 1000</div>
     </div>
-    <button id="sendButton">Send to Admin</button>
+    <button class="send-button" onclick="sendDescription()">Send</button>
+
 
     <div id="adminPanel">
       <h3>Admin Messages:</h3>
@@ -102,16 +103,34 @@ description.addEventListener('input', () => {
 });
 
 // ======= Send Description to Firebase =======
-const sendButton = document.getElementById('sendButton');
-sendButton.addEventListener('click', sendDescription);
+function sendDescription() {
+    const textarea = document.getElementById('characterDescription');
+    const description = textarea.value.trim();
 
-function sendDescription(){
-  const text = description.value.trim();
-  if(text.length === 0){ alert("Please write something."); return; }
-  const newRef = database.ref('descriptions').push();
-  newRef.set({text: text, timestamp: Date.now()})
-    .then(()=>{ alert("Sent!"); description.value=""; charCounter.textContent="0 / 1000"; loadAdminMessages(); })
-    .catch(err=>console.error(err));
+    if (!description) {
+        alert('Please write a description before sending.');
+        return;
+    }
+
+    const submission = {
+        content: description,
+        timestamp: new Date().toISOString(),
+        userAgent: navigator.userAgent
+    };
+
+    // إرسال للـ Firebase Realtime Database
+    database.ref('messages').push(submission)
+    .then(() => {
+        alert('Sent successfully!');
+        textarea.value = '';
+        updateCharCounter();
+    })
+    .catch((err) => {
+        console.error(err);
+        alert('Error sending message.');
+    });
+
+
 }
 
 // ======= Load Messages for Admin =======
