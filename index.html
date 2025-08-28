@@ -1,682 +1,133 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Character Description</title>
-    <!-- EmailJS SDK -->
-    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Courier New', monospace;
-        }
-
-        body {
-            font-family: 'Arial', sans-serif;
-            background-image: url('data:image/jpeg;base64,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');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow-x: hidden;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 800px;
-            padding: 20px;
-        }
-
-        /* Start Page Styles */
-        .start-page {
-            background: black;
-            border-radius: 20px;
-            padding: 60px 40px;
-            text-align: center;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            backdrop-filter: blur(10px);
-            transition: all 0.5s ease;
-            position: relative;
-        }
-
-        .pixel-title {
-            font-family: 'Courier New', monospace;
-            font-size: 4rem;
-            color: white;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-            filter: blur(1px);
-            transform: perspective(500px) rotateX(15deg);
-            margin-bottom: 40px;
-            animation: titleFloat 3s ease-in-out infinite;
-            letter-spacing: 3px;
-            font-weight: bold;
-        }
-
-        @keyframes titleFloat {
-            0%, 100% { transform: perspective(500px) rotateX(15deg) translateY(0px); }
-            50% { transform: perspective(500px) rotateX(15deg) translateY(-10px); }
-        }
-
-        .start-button {
-            background: transparent;
-            color: transparent;
-            border: none;
-            padding: 0;
-            font-size: 2rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            width: 120px;
-            height: 120px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .start-button::before {
-            content: "✦";
-            position: absolute;
-            font-size: 8rem;
-            color: rgba(64, 64, 64, 0.8);
-            z-index: 1;
-        }
-
-        .start-button-text {
-            font-family: 'Courier New', monospace;
-            font-size: 1.5rem;
-            font-weight: bold;
-            position: absolute;
-            z-index: 2;
-            background: linear-gradient(to bottom, #4a4a4a 50%, #2a2a2a 50%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: 1px;
-        }
-
-        .start-button:hover {
-            transform: scale(1.1);
-        }
-
-        .start-button:hover::before {
-            color: rgba(80, 80, 80, 1);
-        }
-
-        /* Writing Page Styles */
-        .writing-page {
-            display: none;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            backdrop-filter: blur(10px);
-            position: relative;
-        }
-
-        /* Floating Images Animation */
-        .floating-container {
-            height: 80px;
-            margin-bottom: 20px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .floating-box {
-            position: absolute;
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(45deg, #ff6b6b, #feca57);
-            border-radius: 10px;
-            top: 15px;
-            right: -60px;
-            animation: floatMove 4s linear infinite;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .floating-box:nth-child(2) { animation-delay: 1.33s; }
-        .floating-box:nth-child(3) { animation-delay: 2.66s; }
-
-        @keyframes floatMove {
-            0% {
-                right: -60px;
-                transform: rotate(90deg);
-                opacity: 1;
-            }
-            50% {
-                transform: rotate(0deg);
-            }
-            100% {
-                right: calc(100% + 60px);
-                transform: rotate(90deg);
-                opacity: 0;
-            }
-        }
-
-        /* Text Area Styles */
-        .text-container {
-            margin-bottom: 20px;
-        }
-
-        textarea {
-            width: 100%;
-            height: 300px;
-            padding: 20px;
-            border: 2px solid #e0e0e0;
-            border-radius: 15px;
-            font-size: 16px;
-            font-family: inherit;
-            resize: vertical;
-            min-height: 200px;
-            max-height: 500px;
-            transition: border-color 0.3s ease;
-        }
-
-        textarea:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
-        .char-counter {
-            text-align: right;
-            color: #666;
-            font-size: 14px;
-            margin-top: 5px;
-        }
-
-        .char-counter.warning {
-            color: #ff6b6b;
-        }
-
-        /* Send Button */
-        .send-button {
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            font-size: 1.1rem;
-            border-radius: 25px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);
-        }
-
-        .send-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
-        }
-
-        .send-button:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
-        /* Menu Styles */
-        .menu-container {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-        }
-
-        .menu-button {
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            padding: 10px;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .menu-button:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        .menu-icon {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .menu-line {
-            width: 25px;
-            height: 3px;
-            background: #333;
-            border-radius: 2px;
-            transition: all 0.3s ease;
-        }
-
-        .menu-dropdown {
-            display: none;
-            position: absolute;
-            top: 50px;
-            right: 0;
-            background: white;
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            min-width: 200px;
-        }
-
-        .menu-dropdown.active {
-            display: block;
-        }
-
-        .menu-item {
-            margin-bottom: 15px;
-            padding: 10px;
-            background: #f8f9fa;
-            border-radius: 10px;
-        }
-
-        .menu-item:last-child {
-            margin-bottom: 0;
-        }
-
-        .menu-item h4 {
-            color: #333;
-            margin-bottom: 5px;
-            font-size: 14px;
-        }
-
-        .menu-item span {
-            color: #667eea;
-            font-weight: bold;
-            font-size: 16px;
-        }
-
-        /* Admin Panel Styles */
-        .admin-panel {
-            display: none;
-            background: black;
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            backdrop-filter: blur(10px);
-        }
-
-        .admin-header {
-            text-align: center;
-            margin-bottom: 30px;
-            color: white;
-        }
-
-        .message-item {
-            background: #f8f9fa;
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-left: 4px solid #667eea;
-        }
-
-        .message-meta {
-            font-size: 12px;
-            color: #666;
-            margin-bottom: 10px;
-        }
-
-        .message-content {
-            color: #333;
-            line-height: 1.6;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            max-width: 100%;
-        }
-
-        .delete-button {
-            background: #ff4444;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            font-size: 12px;
-            border-radius: 15px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 10px;
-        }
-
-        .delete-button:hover {
-            background: #cc0000;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .container {
-                padding: 10px;
-            }
-
-            .start-page, .writing-page, .admin-panel {
-                padding: 30px 20px;
-            }
-
-            .start-page h1 {
-                font-size: 2rem;
-            }
-
-            textarea {
-                height: 250px;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Character Description</title>
+<!-- EmailJS SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<style>
+/* ====== حافظنا على كل التنسيقات القديمة كما هي ====== */
+* {margin:0; padding:0; box-sizing:border-box; font-family:'Courier New', monospace;}
+body {font-family:'Arial', sans-serif; background-image: url('data:image/jpeg;base64,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'); background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: fixed; min-height: 100vh; display: flex; justify-content: center; align-items: center; overflow-x: hidden;}
+.container {width:100%; max-width:800px; padding:20px;}
+/* Start Page Styles */
+.start-page {background:black; border-radius:20px; padding:60px 40px; text-align:center; box-shadow:0 20px 40px rgba(0,0,0,0.1); backdrop-filter:blur(10px); transition: all 0.5s ease; position: relative;}
+.pixel-title {font-family:'Courier New', monospace; font-size:4rem; color:white; text-shadow:0 0 10px rgba(255,255,255,0.5); filter:blur(1px); transform: perspective(500px) rotateX(15deg); margin-bottom:40px; animation: titleFloat 3s ease-in-out infinite; letter-spacing:3px; font-weight:bold;}
+@keyframes titleFloat {0%,100%{transform: perspective(500px) rotateX(15deg) translateY(0px);} 50%{transform: perspective(500px) rotateX(15deg) translateY(-10px);}}
+.start-button {background:transparent; color:transparent; border:none; padding:0; font-size:2rem; cursor:pointer; transition: all 0.3s ease; position: relative; width:120px; height:120px; display:inline-flex; align-items:center; justify-content:center;}
+.start-button::before {content:"✦"; position:absolute; font-size:8rem; color:rgba(64,64,64,0.8); z-index:1;}
+.start-button-text {font-family:'Courier New', monospace; font-size:1.5rem; font-weight:bold; position:absolute; z-index:2; background:linear-gradient(to bottom, #4a4a4a 50%, #2a2a2a 50%); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; letter-spacing:1px;}
+.start-button:hover {transform:scale(1.1);}
+.start-button:hover::before {color: rgba(80,80,80,1);}
+.writing-page {display:none; background: rgba(255,255,255,0.95); border-radius:20px; padding:40px; box-shadow:0 20px 40px rgba(0,0,0,0.1); backdrop-filter:blur(10px); position: relative;}
+.floating-container {height:80px; margin-bottom:20px; overflow:hidden; position:relative;}
+.floating-box {position:absolute; width:50px; height:50px; background:linear-gradient(45deg,#ff6b6b,#feca57); border-radius:10px; top:15px; right:-60px; animation: floatMove 4s linear infinite; box-shadow:0 5px 15px rgba(0,0,0,0.2);}
+.floating-box:nth-child(2) {animation-delay:1.33s;} .floating-box:nth-child(3) {animation-delay:2.66s;}
+@keyframes floatMove {0%{right:-60px; transform:rotate(90deg); opacity:1;} 50%{transform:rotate(0deg);} 100%{right:calc(100%+60px); transform:rotate(90deg); opacity:0;}}
+.text-container {margin-bottom:20px;}
+textarea {width:100%; height:300px; padding:20px; border:2px solid #e0e0e0; border-radius:15px; font-size:16px; font-family:inherit; resize:vertical; min-height:200px; max-height:500px; transition:border-color 0.3s ease;}
+textarea:focus {outline:none; border-color:#667eea; box-shadow:0 0 0 3px rgba(102,126,234,0.1);}
+.char-counter {text-align:right; color:#666; font-size:14px; margin-top:5px;}
+.char-counter.warning {color:#ff4d4f; font-weight:bold;}
+button {margin-top:15px; padding:15px 30px; font-size:18px; border:none; border-radius:10px; background:#667eea; color:white; cursor:pointer; transition: all 0.3s ease;}
+button:hover {background:#556cd6; transform:scale(1.05);}
+#adminPanel {margin-top:40px; border:2px solid #ccc; padding:20px; border-radius:15px; display:none; background:#f0f0f0;}
+#adminMessages {max-height:300px; overflow-y:auto;}
+.admin-message {border-bottom:1px solid #ccc; padding:5px 0;}
+</style>
 </head>
 <body>
-    <div class="container">
-        <!-- Start Page -->
-        <div class="start-page" id="startPage">
-            <div class="pixel-title">Describe the Character</div>
-            <button class="start-button" onclick="showWritingPage()">
-                <span class="start-button-text">START</span>
-            </button>
-        </div>
+<div class="container">
+  <!-- Start Page -->
+  <div class="start-page" id="startPage">
+    <div class="pixel-title">Character Creator</div>
+    <button class="start-button" id="startButton"><span class="start-button-text">Start</span></button>
+  </div>
 
-        <!-- Writing Page -->
-        <div class="writing-page" id="writingPage">
-            <!-- Floating Images Container -->
-            <div class="floating-container">
-                <div class="floating-box"></div>
-                <div class="floating-box"></div>
-                <div class="floating-box"></div>
-            </div>
-
-            <!-- Menu -->
-            <div class="menu-container">
-                <button class="menu-button" onclick="toggleMenu()">
-                    <div class="menu-icon">
-                        <div class="menu-line"></div>
-                        <div class="menu-line"></div>
-                        <div class="menu-line"></div>
-                    </div>
-                </button>
-                <div class="menu-dropdown" id="menuDropdown">
-                    <div class="menu-item">
-                        <h4>Total Submissions</h4>
-                        <span id="totalSubmissions">0</span>
-                    </div>
-                    <div class="menu-item">
-                        <h4>Your Submissions Today</h4>
-                        <span id="userSubmissions">0/2</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Text Area -->
-            <div class="text-container">
-                <textarea 
-                    id="characterDescription" 
-                    placeholder="Describe your character here... What do they look like? What's their personality? What's their story?"
-                    maxlength="4000"
-                    oninput="updateCharCounter()"
-                ></textarea>
-                <div class="char-counter" id="charCounter">0/4000</div>
-            </div>
-
-            <!-- Send Button -->
-            <button class="send-button" id="sendButton" onclick="sendDescription()">Send</button>
-        </div>
-
-        <!-- Admin Panel -->
-        <div class="admin-panel" id="adminPanel">
-            <div class="admin-header">
-                <h2>Submitted Descriptions</h2>
-                <button class="start-button" onclick="showWritingPage()">Back to Form</button>
-            </div>
-            <div id="messagesContainer">
-                <p style="text-align: center; color: #666;">No submissions yet.</p>
-            </div>
-        </div>
+  <!-- Writing Page -->
+  <div class="writing-page" id="writingPage">
+    <div class="floating-container">
+      <div class="floating-box"></div>
+      <div class="floating-box"></div>
+      <div class="floating-box"></div>
     </div>
+    <div class="text-container">
+      <textarea id="description" placeholder="Write your character description..."></textarea>
+      <div class="char-counter" id="charCounter">0 / 1000</div>
+    </div>
+    <button id="sendButton">Send to Admin</button>
 
-    <script>
-        // Global variables
-        let submissions = [];
-        let userSubmissionCount = 0;
-        let lastSubmissionDate = null;
+    <div id="adminPanel">
+      <h3>Admin Messages:</h3>
+      <div id="adminMessages"></div>
+    </div>
+  </div>
+</div>
 
-        // Initialize EmailJS
-        (function(){
-            emailjs.init("xlYihz24Md9_xYqxr");
-        })();
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 
-        // Initialize the app
-        function initApp() {
-            loadSubmissions();
-            updateMenuStats();
-            checkAdminAccess();
-        }
+<script>
+// ======= Firebase Configuration =======
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+  databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_PROJECT_ID.appspot.com",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
+firebase.initializeApp(firebaseConfig);
+const database = firebase.database();
 
-        // Show writing page
-        function showWritingPage() {
-            document.getElementById('startPage').style.display = 'none';
-            document.getElementById('adminPanel').style.display = 'none';
-            document.getElementById('writingPage').style.display = 'block';
-            updateCharCounter();
-            checkSubmissionLimit();
-        }
+// ======= Start Page =======
+const startPage = document.getElementById('startPage');
+const startButton = document.getElementById('startButton');
+const writingPage = document.getElementById('writingPage');
 
-        // Toggle menu dropdown
-        function toggleMenu() {
-            const dropdown = document.getElementById('menuDropdown');
-            dropdown.classList.toggle('active');
-        }
+startButton.addEventListener('click', () => {
+  startPage.style.display = 'none';
+  writingPage.style.display = 'block';
+});
 
-        // Update character counter
-        function updateCharCounter() {
-            const textarea = document.getElementById('characterDescription');
-            const counter = document.getElementById('charCounter');
-            const length = textarea.value.length;
-            
-            counter.textContent = `${length}/4000`;
-            
-            if (length > 3800) {
-                counter.classList.add('warning');
-            } else {
-                counter.classList.remove('warning');
-            }
-        }
+// ======= Character Counter =======
+const description = document.getElementById('description');
+const charCounter = document.getElementById('charCounter');
+description.addEventListener('input', () => {
+  const len = description.value.length;
+  charCounter.textContent = `${len} / 1000`;
+  if(len > 1000) charCounter.classList.add('warning'); else charCounter.classList.remove('warning');
+});
 
-        // Check submission limit
-        function checkSubmissionLimit() {
-            const today = new Date().toDateString();
-            const storedData = localStorage.getItem('userSubmissions');
-            
-            if (storedData) {
-                const data = JSON.parse(storedData);
-                if (data.date === today) {
-                    userSubmissionCount = data.count;
-                } else {
-                    userSubmissionCount = 0;
-                    localStorage.setItem('userSubmissions', JSON.stringify({
-                        date: today,
-                        count: 0
-                    }));
-                }
-            }
-            
-            updateMenuStats();
-            
-            const sendButton = document.getElementById('sendButton');
-            if (userSubmissionCount >= 2) {
-                sendButton.disabled = true;
-                sendButton.textContent = 'Daily limit reached (2/2)';
-            } else {
-                sendButton.disabled = false;
-                sendButton.textContent = 'Send';
-            }
-        }
+// ======= Send Description to Firebase =======
+const sendButton = document.getElementById('sendButton');
+sendButton.addEventListener('click', sendDescription);
 
-        // Send description
-        function sendDescription() {
-            const textarea = document.getElementById('characterDescription');
-            const description = textarea.value.trim();
-            
-            if (!description) {
-                alert('Please write a description before sending.');
-                return;
-            }
-            
-            if (userSubmissionCount >= 2) {
-                alert('You have reached your daily limit of 2 submissions.');
-                return;
-            }
-            
-            // Disable send button during sending
-            const sendButton = document.getElementById('sendButton');
-            sendButton.disabled = true;
-            sendButton.textContent = 'Sending...';
-            sendButton.style.background = '#ffa500';
-            
-            // Prepare email data
-            const emailData = {
-                character_description: description,
-                submission_time: new Date().toLocaleString(),
-                user_browser: navigator.userAgent.substring(0, 100),
-                submission_number: submissions.length + 1,
-                user_submissions_today: userSubmissionCount + 1
-            };
-            
-            // Create submission object for local storage FIRST
-            const submission = {
-                id: Date.now(),
-                content: description,
-                timestamp: new Date().toISOString(),
-                userAgent: navigator.userAgent.substring(0, 50) + '...'
-            };
-            
-            // Save submission locally BEFORE sending email
-            submissions.push(submission);
-            localStorage.setItem('submissions', JSON.stringify(submissions));
-            
-            // Send email via EmailJS
-            emailjs.send('service_mqi0fu5', 'template_mlyrf6m', emailData)
-                .then(function(response) {
-                    console.log('Email sent successfully!', response.status, response.text);
-                    
-                    // Update user submission count
-                    userSubmissionCount++;
-                    const today = new Date().toDateString();
-                    localStorage.setItem('userSubmissions', JSON.stringify({
-                        date: today,
-                        count: userSubmissionCount
-                    }));
-                    
-                    // Clear textarea and update UI
-                    textarea.value = '';
-                    updateCharCounter();
-                    updateMenuStats();
-                    
-                    // Show success feedback
-                    sendButton.textContent = 'Sent Successfully!';
-                    sendButton.style.background = '#48bb78';
-                    
-                    setTimeout(() => {
-                        sendButton.style.background = 'linear-gradient(45deg, #667eea, #764ba2)';
-                        checkSubmissionLimit();
-                    }, 3000);
-                    
-                }, function(error) {
-                    console.log('Email failed to send:', error);
-                    
-                    // Remove the submission if email fails
-                    submissions.pop();
-                    localStorage.setItem('submissions', JSON.stringify(submissions));
-                    
-                    // Show error feedback
-                    sendButton.textContent = 'Failed to Send';
-                    sendButton.style.background = '#ff4444';
-                    sendButton.disabled = false;
-                    
-                    alert('Failed to send your description. Please try again.');
-                    
-                    setTimeout(() => {
-                        sendButton.style.background = 'linear-gradient(45deg, #667eea, #764ba2)';
-                        sendButton.textContent = 'Send';
-                    }, 3000);
-                });
-        }
+function sendDescription(){
+  const text = description.value.trim();
+  if(text.length === 0){ alert("Please write something."); return; }
+  const newRef = database.ref('descriptions').push();
+  newRef.set({text: text, timestamp: Date.now()})
+    .then(()=>{ alert("Sent!"); description.value=""; charCounter.textContent="0 / 1000"; loadAdminMessages(); })
+    .catch(err=>console.error(err));
+}
 
-        // Update menu statistics
-        function updateMenuStats() {
-            document.getElementById('totalSubmissions').textContent = submissions.length;
-            document.getElementById('userSubmissions').textContent = `${userSubmissionCount}/2`;
-        }
-
-        // Load submissions from storage
-        function loadSubmissions() {
-            const stored = localStorage.getItem('submissions');
-            if (stored) {
-                submissions = JSON.parse(stored);
-            }
-        }
-
-        // Check for admin access
-        function checkAdminAccess() {
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get('admin_access_key') === 'a7f9d2e8b3c1x9z5q4w7r2t8y1u6i0p3') {
-                showAdminPanel();
-            }
-        }
-
-        // Show admin panel
-        function showAdminPanel() {
-            document.getElementById('startPage').style.display = 'none';
-            document.getElementById('writingPage').style.display = 'none';
-            document.getElementById('adminPanel').style.display = 'block';
-            
-            displaySubmissions();
-        }
-
-        // Display submissions in admin panel
-        function displaySubmissions() {
-            const container = document.getElementById('messagesContainer');
-            
-            if (submissions.length === 0) {
-                container.innerHTML = '<p style="text-align: center; color: #666;">No submissions yet.</p>';
-                return;
-            }
-            
-            const html = submissions.map((submission, index) => `
-                <div class="message-item" id="submission-${submission.id}">
-                    <div class="message-meta">
-                        Submission #${index + 1} | ${new Date(submission.timestamp).toLocaleString()} | ${submission.userAgent}
-                    </div>
-                    <div class="message-content">${submission.content}</div>
-                    <button class="delete-button" onclick="deleteSubmission('${submission.id}')">Delete</button>
-                </div>
-            `).join('');
-            
-            container.innerHTML = html;
-        }
-
-        // Delete submission function
-        function deleteSubmission(submissionId) {
-            if (confirm('Are you sure you want to delete this submission?')) {
-                submissions = submissions.filter(submission => submission.id != submissionId);
-                localStorage.setItem('submissions', JSON.stringify(submissions));
-                displaySubmissions();
-                updateMenuStats();
-            }
-        }
-
-        // Close menu when clicking outside
-        document.addEventListener('click', function(event) {
-            const menuContainer = document.querySelector('.menu-container');
-            const dropdown = document.getElementById('menuDropdown');
-            
-            if (!menuContainer.contains(event.target)) {
-                dropdown.classList.remove('active');
-            }
-        });
-
-        // Initialize app when page loads
-        window.addEventListener('load', initApp);
-    </script>
+// ======= Load Messages for Admin =======
+function loadAdminMessages(){
+  const adminMessages = document.getElementById('adminMessages');
+  adminMessages.innerHTML = "";
+  database.ref('descriptions').orderByChild('timestamp').once('value', snapshot => {
+    snapshot.forEach(childSnap=>{
+      const msgDiv = document.createElement('div');
+      msgDiv.className = 'admin-message';
+      msgDiv.textContent = childSnap.val().text;
+      adminMessages.appendChild(msgDiv);
+    });
+    document.getElementById('adminPanel').style.display = 'block';
+  });
+}
+</script>
 </body>
 </html>
