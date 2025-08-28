@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Character Description</title>
+    <!-- EmailJS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -14,7 +16,7 @@
 
         body {
             font-family: 'Arial', sans-serif;
-            background-image: url(https://raw.githubusercontent.com/dof9moomo/character-descriptions/9439b8ed2bcd8b3411541668b8a911a0c20a175a/background%20(1)%20(1).jpg);
+            background-image: url('data:image/jpeg;base64,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');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -31,13 +33,8 @@
             max-width: 800px;
             padding: 20px;
         }
-        <script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
-<script type="text/javascript">
-  (function() {
-      emailjs.init("xlYihz24Md9_xYqxr"); // حط الـ Public Key حقك هنا
-  })();
-</script>
-        }        /* Start Page Styles */
+
+        /* Start Page Styles */
         .start-page {
             background: rgba(255, 255, 255, 0.1);
             border-radius: 20px;
@@ -424,6 +421,11 @@
         let userSubmissionCount = 0;
         let lastSubmissionDate = null;
 
+        // Initialize EmailJS
+        (function(){
+            emailjs.init("xlYihz24Md9_xYqxr");
+        })();
+
         // Initialize the app
         function initApp() {
             loadSubmissions();
@@ -491,121 +493,90 @@
             }
         }
 
-        
-         // Send description
-function sendDescription() {
-    const textarea = document.getElementById('characterDescription');
-    const description = textarea.value.trim();
-
-    if (!description) {
-        alert('Please write a description before sending.');
-        return;
-    }
-
-    if (userSubmissionCount >= 2) {
-        alert('You have reached your daily limit of 2 submissions.');
-        return;
-    }
-
-    // إرسال بالإيميل
-    emailjs.send("service_mqi0fu5", "
-__ejs-test-mail-service__", {
-        message: description,
-        user_agent: navigator.userAgent
-    })
-    .then(function() {
-        alert("Message sent successfully!");
-        textarea.value = '';
-        updateCharCounter();
-
-        // تحديث عداد المستخدم
-        userSubmissionCount++;
-        const today = new Date().toDateString();
-        localStorage.setItem('userSubmissions', JSON.stringify({
-            date: today,
-            count: userSubmissionCount
-        }));
-        updateMenuStats();
-        checkSubmissionLimit();
-    }, function(error) {
-        alert("Failed to send message: " + JSON.stringify(error));
-    });
-}
-
-    }
-    
-    // Create submission object
-    const submission = {
-        content: description,
-        timestamp: new Date().toISOString(),
-        userAgent: navigator.userAgent.substring(0, 50) + '...'
-    };
-
-    // ✨ إرسال البيانات إلى Google Sheets
-    fetch("PUT-YOUR-SCRIPT-LINK-HERE", {   // ← حط رابط Google Apps Script هنا
-        method: "POST",
-        body: JSON.stringify(submission)
-    })
-    .then(res => res.text())
-    .then(data => {
-        // تحديث العداد
-        userSubmissionCount++;
-        const today = new Date().toDateString();
-        localStorage.setItem('userSubmissions', JSON.stringify({
-            date: today,
-            count: userSubmissionCount
-        }));
-
-        // تفريغ النص وتحديث الواجهة
-        textarea.value = '';
-        updateCharCounter();
-        updateMenuStats();
-        checkSubmissionLimit();
-        
-        const sendButton = document.getElementById('sendButton');
-        sendButton.textContent = 'Sent!';
-        sendButton.style.background = '#48bb78';
-
-        setTimeout(() => {
-            sendButton.style.background = 'linear-gradient(45deg, #667eea, #764ba2)';
-            checkSubmissionLimit();
-        }, 2000);
-    })
-    .catch(err => {
-        console.error(err);
-        alert("Failed to send. Please try again.");
-    });
-}
-
+        // Send description
+        function sendDescription() {
+            const textarea = document.getElementById('characterDescription');
+            const description = textarea.value.trim();
             
-            // Save submission
-            submissions.push(submission);
-            localStorage.setItem('submissions', JSON.stringify(submissions));
+            if (!description) {
+                alert('Please write a description before sending.');
+                return;
+            }
             
-            // Update user submission count
-            userSubmissionCount++;
-            const today = new Date().toDateString();
-            localStorage.setItem('userSubmissions', JSON.stringify({
-                date: today,
-                count: userSubmissionCount
-            }));
+            if (userSubmissionCount >= 2) {
+                alert('You have reached your daily limit of 2 submissions.');
+                return;
+            }
             
-            // Clear textarea and update UI
-            textarea.value = '';
-            updateCharCounter();
-            updateMenuStats();
-            checkSubmissionLimit();
-            
-            // Show success feedback
+            // Disable send button during sending
             const sendButton = document.getElementById('sendButton');
-            const originalText = sendButton.textContent;
-            sendButton.textContent = 'Sent!';
-            sendButton.style.background = '#48bb78';
+            sendButton.disabled = true;
+            sendButton.textContent = 'Sending...';
+            sendButton.style.background = '#ffa500';
             
-            setTimeout(() => {
-                sendButton.style.background = 'linear-gradient(45deg, #667eea, #764ba2)';
-                checkSubmissionLimit();
-            }, 2000);
+            // Prepare email data
+            const emailData = {
+                character_description: description,
+                submission_time: new Date().toLocaleString(),
+                user_browser: navigator.userAgent.substring(0, 100),
+                submission_number: submissions.length + 1,
+                user_submissions_today: userSubmissionCount + 1
+            };
+            
+            // Send email via EmailJS
+            emailjs.send('service_mqi0fu5', 'template_mlyrf6m', emailData)
+                .then(function(response) {
+                    console.log('Email sent successfully!', response.status, response.text);
+                    
+                    // Create submission object for local storage
+                    const submission = {
+                        id: Date.now(),
+                        content: description,
+                        timestamp: new Date().toISOString(),
+                        userAgent: navigator.userAgent.substring(0, 50) + '...'
+                    };
+                    
+                    // Save submission locally
+                    submissions.push(submission);
+                    localStorage.setItem('submissions', JSON.stringify(submissions));
+                    
+                    // Update user submission count
+                    userSubmissionCount++;
+                    const today = new Date().toDateString();
+                    localStorage.setItem('userSubmissions', JSON.stringify({
+                        date: today,
+                        count: userSubmissionCount
+                    }));
+                    
+                    // Clear textarea and update UI
+                    textarea.value = '';
+                    updateCharCounter();
+                    updateMenuStats();
+                    
+                    // Show success feedback
+                    sendButton.textContent = 'Sent Successfully!';
+                    sendButton.style.background = '#48bb78';
+                    
+                    setTimeout(() => {
+                        sendButton.style.background = 'linear-gradient(45deg, #667eea, #764ba2)';
+                        checkSubmissionLimit();
+                    }, 3000);
+                    
+                }, function(error) {
+                    console.log('Email failed to send:', error);
+                    
+                    // Show error feedback
+                    sendButton.textContent = 'Failed to Send';
+                    sendButton.style.background = '#ff4444';
+                    sendButton.disabled = false;
+                    
+                    alert('Failed to send your description. Please try again.');
+                    
+                    setTimeout(() => {
+                        sendButton.style.background = 'linear-gradient(45deg, #667eea, #764ba2)';
+                        sendButton.textContent = 'Send';
+                    }, 3000);
+                });
         }
 
         // Update menu statistics
